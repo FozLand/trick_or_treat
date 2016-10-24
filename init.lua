@@ -61,20 +61,18 @@ minetest.register_node('trick_or_treat:treat_box', {
 		description = 'Box that gives candy when punched',
 		tiles = {'trick_or_treat_treat_box.png'},
 		groups = {oddly_breakable_by_hand = 1, not_in_creative_inventory = 1},
-})
-
-minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
-		if puncher:get_wielded_item():get_name() == "trick_or_treat:candy_bucket"
-		   and node.name == "trick_or_treat:treat_box" then
-			local choice = math.random(1, 34)
-			local amount = math.random(1, 5)
-			local inv = puncher:get_inventory()
-			local name = candy[tonumber(choice)]
-		if inv:room_for_item( 'main', name..' '..amount ) then
-			puncher:get_inventory():add_item("main", name..' '..amount) return
-		else
-			minetest.chat_send_player(puncher:get_player_name(),
-				'No Candy for you!!! Your inventory was full')
+		on_punch = function(pos, node, puncher, pointed_thing)
+			local wielded_item = puncher:get_wielded_item():get_name()
+			if wielded_item == 'trick_or_treat:candy_bucket' then
+				local item = candy[math.random(1,#candy)]
+				local amount = math.random(1, 5)
+				local inv = puncher:get_inventory()
+				if inv:room_for_item('main', item..' '..amount) then
+					puncher:get_inventory():add_item('main', item..' '..amount)
+				else
+					minetest.chat_send_player(puncher:get_player_name(),
+						'No Candy for you!!! Your inventory was full')
+				end
+			end
 		end
-	end
-end)
+})
