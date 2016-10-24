@@ -1,0 +1,1 @@
+Gives player candy when they hit a special treat block with a candy bucket
