@@ -51,6 +51,8 @@ local candy = {
 	'mtcandy:emenems'
 }
 
+local distribution = {1, 1, 1, 2, 2, 3}
+
 minetest.register_craftitem('trick_or_treat:candy_bucket', {
 		description = 'Candy Bucket',
 		stack_max = 1,
@@ -88,7 +90,8 @@ minetest.register_node('trick_or_treat:treat_box', {
 
 					-- It's almost Halloween so give them candy.
 					local item = candy[math.random(1,#candy)]
-					local amount = math.random(1, 5)
+					local amount = distribution[math.random(1, #distribution)]
+
 					local inv = puncher:get_inventory()
 					if inv:room_for_item('main', item..' '..amount) then
 						puncher:get_inventory():add_item('main', item..' '..amount)
