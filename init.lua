@@ -64,12 +64,29 @@ minetest.register_node('trick_or_treat:treat_box', {
 		on_punch = function(pos, node, puncher, pointed_thing)
 			local wielded_item = puncher:get_wielded_item():get_name()
 			if wielded_item == 'trick_or_treat:candy_bucket' then
+
 				local meta = minetest.get_meta(pos)
 				local last = meta:get_string('last_user')
 				local name = puncher:get_player_name()
 
 				if last ~= name then
 					meta:set_string('last_user',name)
+
+					-- Check the date.
+					local now = os.time()
+					local halloween = {
+						year = os.date('*t',now).year,
+						month = 10,
+						day = 31,
+					}
+
+					if math.abs(now - os.time(halloween)) > 259200 then -- 3 days
+						minetest.chat_send_player(name,
+							'Its not close enough to Halloween to be trick or treating.')
+						return
+					end
+
+					-- It's almost Halloween so give them candy.
 					local item = candy[math.random(1,#candy)]
 					local amount = math.random(1, 5)
 					local inv = puncher:get_inventory()
