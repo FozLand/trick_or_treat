@@ -64,14 +64,26 @@ minetest.register_node('trick_or_treat:treat_box', {
 		on_punch = function(pos, node, puncher, pointed_thing)
 			local wielded_item = puncher:get_wielded_item():get_name()
 			if wielded_item == 'trick_or_treat:candy_bucket' then
-				local item = candy[math.random(1,#candy)]
-				local amount = math.random(1, 5)
-				local inv = puncher:get_inventory()
-				if inv:room_for_item('main', item..' '..amount) then
-					puncher:get_inventory():add_item('main', item..' '..amount)
+				local meta = minetest.get_meta(pos)
+				local last = meta:get_string('last_user')
+				local name = puncher:get_player_name()
+
+				if last ~= name then
+					meta:set_string('last_user',name)
+					local item = candy[math.random(1,#candy)]
+					local amount = math.random(1, 5)
+					local inv = puncher:get_inventory()
+					if inv:room_for_item('main', item..' '..amount) then
+						puncher:get_inventory():add_item('main', item..' '..amount)
+						minetest.log('action', 'Trick or Treat: Gave '..name..' '..amount..
+							' '..item..' at '..minetest.pos_to_string(pos))
+					else
+						minetest.chat_send_player(name,
+							'No Candy for you!!! Your inventory is full')
+					end
 				else
-					minetest.chat_send_player(puncher:get_player_name(),
-						'No Candy for you!!! Your inventory was full')
+					minetest.chat_send_player(name,
+						'You have already stopped here. Try again later.')
 				end
 			end
 		end
