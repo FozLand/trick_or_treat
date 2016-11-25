@@ -59,6 +59,10 @@ minetest.register_tool('trick_or_treat:candy_bucket', {
 		wield_image     = 'trick_or_treat_candy_bucket.png^[transformR270]',
 })
 
+if wieldview then
+	wieldview.transform['trick_or_treat:candy_bucket']='R180'
+end
+
 minetest.register_craft({
 	output = 'trick_or_treat:candy_bucket',
 	recipe = {
