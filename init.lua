@@ -53,10 +53,18 @@ local candy = {
 
 local distribution = {1, 1, 1, 2, 2, 3}
 
-minetest.register_craftitem('trick_or_treat:candy_bucket', {
+minetest.register_tool('trick_or_treat:candy_bucket', {
 		description = 'Candy Bucket',
-		stack_max = 1,
 		inventory_image = 'trick_or_treat_candy_bucket.png',
+		wield_image     = 'trick_or_treat_candy_bucket.png^[transformR270]',
+})
+
+minetest.register_craft({
+	output = 'trick_or_treat:candy_bucket',
+	recipe = {
+		{'group:stick'},
+		{'farming:pumpkin_face'},
+	}
 })
 
 minetest.register_node('trick_or_treat:treat_box', {
