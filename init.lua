@@ -1,5 +1,6 @@
 -- Trick or Treat mod by mootpoint
 -- Copyright (C) 2016 Tucker 'mootpoint' Bamberg
+-- Foz name here
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
